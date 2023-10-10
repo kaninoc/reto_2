@@ -1,8 +1,5 @@
 package co.edu.unal.tictactoe;
 
-
-import android.view.Menu;
-
 import java.util.Random;
 public class TicTacToeGame {
 
@@ -14,6 +11,18 @@ public class TicTacToeGame {
     private Random mRand;
     private final int BOARD_SIZE = 9;
 
+    // Los niveles de dificultad de la computadora
+    public enum DifficultyLevel { Easy, Hard, Expert };
+    // Nivel de dificultad actual
+    private DifficultyLevel mDifficultyLevel = DifficultyLevel.Expert;
+
+    public DifficultyLevel getDifficultyLevel() {
+        return mDifficultyLevel;
+    }
+
+    public void setDifficultyLevel(DifficultyLevel difficultyLevel) {
+        mDifficultyLevel = difficultyLevel;
+    }
     public TicTacToeGame() {
 
         // Seed the random number generator
@@ -38,8 +47,27 @@ public class TicTacToeGame {
             mBoard[location] = player;
         }
     }
-
     public int getComputerMove() {
+        int move = -1;
+        if (mDifficultyLevel == DifficultyLevel.Easy)
+            move = getRandomMove();
+        else if (mDifficultyLevel == DifficultyLevel.Hard) {
+            move = getWinningMove();
+            if (move == -1)
+                move = getRandomMove();
+        }
+        else if (mDifficultyLevel == DifficultyLevel.Expert) {
+            // Intenta ganar, pero si eso no es posible, bloquea.
+            // Si eso no es posible, mueve en cualquier lugar.
+            move = getWinningMove();
+            if (move == -1)
+                move = getBlockingMove();
+            if (move == -1)
+                move = getRandomMove();
+        }
+        return move;
+    }
+    public int getRandomMove() {
         int move;
         do {
             move = mRand.nextInt(9);
@@ -47,6 +75,55 @@ public class TicTacToeGame {
         return move;
     }
 
+    public int getWinningMove() {
+        // Buscar una jugada ganadora para la computadora ('O')
+        for (int i = 0; i < mBoard.length; i++) {
+            if (mBoard[i] == OPEN_SPOT) {
+                // Guardar el valor original de la casilla
+                char originalValue = mBoard[i];
+
+                // Simular un movimiento de la computadora
+                mBoard[i] = COMPUTER_PLAYER;
+
+                // Verificar si este movimiento resulta en una victoria de la computadora
+                if (checkForWinner() == 3) {
+                    mBoard[i] = originalValue; // Restaurar el estado original
+                    return i;
+                }
+
+                // Restaurar el estado original
+                mBoard[i] = originalValue;
+            }
+        }
+
+        // Si no hay movimientos ganadores, devolver -1
+        return -1;
+    }
+
+    public int getBlockingMove() {
+        // Buscar una jugada para bloquear al jugador humano ('X')
+        for (int i = 0; i < mBoard.length; i++) {
+            if (mBoard[i] == OPEN_SPOT) {
+                // Guardar el valor original de la casilla
+                char originalValue = mBoard[i];
+
+                // Simular un movimiento del jugador humano
+                mBoard[i] = HUMAN_PLAYER;
+
+                // Verificar si este movimiento bloquea al jugador humano
+                if (checkForWinner() == 2) {
+                    mBoard[i] = originalValue; // Restaurar el estado original
+                    return i;
+                }
+
+                // Restaurar el estado original
+                mBoard[i] = originalValue;
+            }
+        }
+
+        // Si no hay movimientos de bloqueo, devolver -1
+        return -1;
+    }
     public int checkForWinner() {
         for (int i = 0; i < 8; i++) {
             int winCombo[] = {0, 0, 0};
