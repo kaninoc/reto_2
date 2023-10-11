@@ -3,6 +3,9 @@ package co.edu.unal.tictactoe;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -24,7 +28,8 @@ public class MainActivity extends AppCompatActivity {
     private Button mBoardButtons[];
     // Various text displayed
     private TextView mInfoTextView;
-
+    static final int DIALOG_DIFFICULTY_ID = 0;
+    static final int DIALOG_QUIT_ID = 1;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         // Buscar el botón de reinicio por su ID
         Button buttonRestart = findViewById(R.id.buttonRestart);
+        // add toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -74,13 +80,61 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //startNewGame();
+
         switch (item.getItemId()){
             case R.id.new_game:
                 startNewGame();
                 return true;
+            case R.id.ai_difficulty:
+            showDialog(DIALOG_DIFFICULTY_ID);
+            return true;
+
         }
         return true;
+    }
+    int selected = -1;
+    @Override
+    protected Dialog onCreateDialog(int id) {
+
+        Dialog dialog = null;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        switch(id) {
+            case DIALOG_DIFFICULTY_ID:
+                builder.setTitle(R.string.difficulty_choose);
+                final CharSequence[] levels = {
+                        getResources().getString(R.string.difficulty_easy),
+                        getResources().getString(R.string.difficulty_harder),
+                        getResources().getString(R.string.difficulty_expert)
+                };
+
+                builder.setSingleChoiceItems(levels, selected,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int item) {
+                                // Guardar la selección del usuario en la variable 'selected'
+                                selected = item;
+
+                                // Configurar el nivel de dificultad en mGame según la selección
+                                if (item == 0) {
+                                    mGame.setDifficultyLevel(TicTacToeGame.DifficultyLevel.Easy);
+                                } else if (item == 1) {
+                                    mGame.setDifficultyLevel(TicTacToeGame.DifficultyLevel.Hard);
+                                } else if (item == 2) {
+                                    mGame.setDifficultyLevel(TicTacToeGame.DifficultyLevel.Expert);
+                                }
+
+                                dialog.dismiss(); // Cerrar el diálogo
+
+                                // Mostrar un mensaje para confirmar la selección de dificultad
+                                Toast.makeText(getApplicationContext(), levels[item], Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                dialog = builder.create();
+                break;
+        }
+
+        return dialog;
     }
     // Set up the game board.
     private void startNewGame() {
