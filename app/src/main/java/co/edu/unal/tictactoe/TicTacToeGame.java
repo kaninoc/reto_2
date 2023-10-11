@@ -14,7 +14,7 @@ public class TicTacToeGame {
     // Los niveles de dificultad de la computadora
     public enum DifficultyLevel { Easy, Hard, Expert };
     // Nivel de dificultad actual
-    private DifficultyLevel mDifficultyLevel = DifficultyLevel.Expert;
+    private DifficultyLevel mDifficultyLevel = DifficultyLevel.Easy;
 
     public DifficultyLevel getDifficultyLevel() {
         return mDifficultyLevel;
