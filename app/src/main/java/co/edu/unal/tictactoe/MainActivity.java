@@ -6,10 +6,15 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.Toolbar;
+
+
 public class MainActivity extends AppCompatActivity {
 
     // Represents the internal state of the game
@@ -24,10 +29,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+        setContentView(R.layout.activity_main);
         // Buscar el botón de reinicio por su ID
         Button buttonRestart = findViewById(R.id.buttonRestart);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         // Agregar un evento de clic al botón de reinicio
         buttonRestart.setOnClickListener(new View.OnClickListener() {
@@ -57,14 +64,22 @@ public class MainActivity extends AppCompatActivity {
         }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        menu.add("New Game");
+        //super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+        //getMenuInflater().inflate(R.menu.options_menu, menu);
+        //menu.add("New Game");
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        startNewGame();
+        //startNewGame();
+        switch (item.getItemId()){
+            case R.id.new_game:
+                startNewGame();
+                return true;
+        }
         return true;
     }
     // Set up the game board.
@@ -78,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         }
         mInfoTextView.setText("You go first.");
         System.out.println("juego iniciado");
-        
+
     }
     // Handles clicks on the game board buttons
     private class ButtonClickListener implements View.OnClickListener {
