@@ -47,6 +47,9 @@ public class TicTacToeGame {
             mBoard[location] = player;
         }
     }
+    public char getBoardOccupant(int location) {
+        return mBoard[location];
+    }
     public int getComputerMove() {
         int move = -1;
         if (mDifficultyLevel == DifficultyLevel.Easy)

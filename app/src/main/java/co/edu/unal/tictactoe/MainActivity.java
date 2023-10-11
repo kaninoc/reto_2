@@ -178,36 +178,35 @@ public class MainActivity extends AppCompatActivity {
     // Handles clicks on the game board buttons
     private class ButtonClickListener implements View.OnClickListener {
         int location;
+
         public ButtonClickListener(int location) {
             this.location = location;
         }
 
         public void onClick(View view) {
-            if (mBoardButtons[location].isEnabled()) {
-                setMove(TicTacToeGame.HUMAN_PLAYER, location);
-                // If no winner yet, let the computer make a move
-                int winner = mGame.checkForWinner();
-                if (winner == 0) {
-                    //mInfoTextView.setText("It's Android's turn.");
-                    mInfoTextView.setText(R.string.turn_computer);
-                    int move = mGame.getComputerMove();
-                    setMove(TicTacToeGame.COMPUTER_PLAYER, move);
-                    winner = mGame.checkForWinner();
+            // Verificar si el juego ya ha terminado
+            if (mGame.checkForWinner() == 0 && mGame.getBoardOccupant(location) == TicTacToeGame.OPEN_SPOT) {
+                if (mBoardButtons[location].isEnabled()) {
+                    setMove(TicTacToeGame.HUMAN_PLAYER, location);
+                    int winner = mGame.checkForWinner();
+                    if (winner == 0) {
+                        mInfoTextView.setText(R.string.turn_computer);
+                        int move = mGame.getComputerMove();
+                        setMove(TicTacToeGame.COMPUTER_PLAYER, move);
+                        winner = mGame.checkForWinner();
+                    }
+                    if (winner == 0)
+                        mInfoTextView.setText(R.string.turn_human);
+                    else if (winner == 1)
+                        mInfoTextView.setText(R.string.result_tie);
+                    else if (winner == 2)
+                        mInfoTextView.setText(R.string.result_human_wins);
+                    else
+                        mInfoTextView.setText(R.string.result_computer_wins);
                 }
-                if (winner == 0)
-                    //mInfoTextView.setText("It's your turn.");
-                    mInfoTextView.setText(R.string.turn_human);
-                else if (winner == 1)
-                    //mInfoTextView.setText("It's a tie!");
-                    mInfoTextView.setText(R.string.result_tie);
-                else if (winner == 2)
-                    //mInfoTextView.setText("You won!");
-                    mInfoTextView.setText(R.string.result_human_wins);
-                else
-                    //mInfoTextView.setText("Android won!");
-                    mInfoTextView.setText(R.string.result_computer_wins);
             }
         }
+
         private void setMove(char player, int location) {
             mGame.setMove(player, location);
             mBoardButtons[location].setEnabled(false);
@@ -217,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
             else
                 mBoardButtons[location].setTextColor(Color.rgb(200, 0, 0));
         }
-
     }
+
 }
 
