@@ -15,7 +15,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.app.AlertDialog.Builder;
+import android.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 
 
@@ -86,8 +87,33 @@ public class MainActivity extends AppCompatActivity {
                 startNewGame();
                 return true;
             case R.id.ai_difficulty:
-            showDialog(DIALOG_DIFFICULTY_ID);
+                showDialog(DIALOG_DIFFICULTY_ID);
             return true;
+            case R.id.quit:
+                // Declarar un objeto AlertDialog.Builder
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+                // Configurar el diálogo de confirmación para salir del juego
+                builder.setMessage(R.string.quit_question)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // Código para salir de la aplicación
+                                finish();
+                            }
+                        })
+                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // Cerrar el diálogo y continuar con el juego
+                                dialog.dismiss();
+                            }
+                        });
+
+                // Crear el diálogo
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                break;
+            
 
         }
         return true;
