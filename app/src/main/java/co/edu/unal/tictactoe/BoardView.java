@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -18,7 +19,7 @@ public class BoardView extends View {
     private Bitmap mComputerBitmap;
 
     private Paint mPaint;
-
+    private TicTacToeGame mGame; // Declaración de la variable miembro mGame
 
     public BoardView(Context context) {
         super(context);
@@ -35,6 +36,17 @@ public class BoardView extends View {
         initialize();
     }
 
+    public void setGame(TicTacToeGame game) {
+        mGame = game;
+    }
+
+    public int getBoardCellWidth() {
+        return getWidth() / 3;
+    }
+
+    public int getBoardCellHeight() {
+        return getHeight() / 3;
+    }
     public void initialize() {
         mHumanBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.xplayer);
         mComputerBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.oplayer);
@@ -60,6 +72,27 @@ public class BoardView extends View {
         int cellHeight = boardWidth / 3;
         canvas.drawLine(0, cellHeight, boardWidth, cellHeight, mPaint);
         canvas.drawLine(0, cellHeight * 2, boardWidth, cellHeight * 2, mPaint);
+
+        // Dibujar las imágenes "X" y "O" en el tablero
+
+        for (int i = 0; i < 9; i++) {
+            int col = i % 3;
+            int row = i / 3;
+
+            // Define las coordenadas del rectángulo de destino para la imagen
+            int left = col * cellWidth;
+            int top = row * cellHeight;
+            int right = left + cellWidth;
+            int bottom = top + cellHeight;
+
+            if (mGame != null) {
+                if (mGame.getBoardOccupant(i) == TicTacToeGame.HUMAN_PLAYER) {
+                    canvas.drawBitmap(mHumanBitmap, null, new Rect(left, top, right, bottom), null);
+                } else if (mGame.getBoardOccupant(i) == TicTacToeGame.COMPUTER_PLAYER) {
+                    canvas.drawBitmap(mComputerBitmap, null, new Rect(left, top, right, bottom), null);
+                }
+            }
+        }
     }
 
 }
