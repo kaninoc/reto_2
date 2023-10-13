@@ -15,8 +15,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.app.AlertDialog.Builder;
-import android.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 
 
@@ -44,12 +42,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Agregar un evento de clic al botón de reinicio
-        buttonRestart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Llama a una función para reiniciar el juego
-                startNewGame();
-            }
+        buttonRestart.setOnClickListener(v -> {
+            // Llama a una función para reiniciar el juego
+            startNewGame();
         });
         //setContentView(R.layout.main);
         // Buscar el botón por su ID
@@ -71,11 +66,8 @@ public class MainActivity extends AppCompatActivity {
         }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.options_menu, menu);
-        //getMenuInflater().inflate(R.menu.options_menu, menu);
-        //menu.add("New Game");
         return true;
     }
 
@@ -172,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
             mBoardButtons[i].setOnClickListener((View.OnClickListener) new ButtonClickListener(i));
         }
         mInfoTextView.setText("You go first.");
-        System.out.println("juego iniciado");
 
     }
     // Handles clicks on the game board buttons
