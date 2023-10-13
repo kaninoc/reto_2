@@ -29,35 +29,29 @@ public class MainActivity extends AppCompatActivity {
     private TextView mInfoTextView;
     static final int DIALOG_DIFFICULTY_ID = 0;
     static final int DIALOG_QUIT_ID = 1;
+
+    private BoardView mBoardView;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        // Buscar el botón de reinicio por su ID
-        Button buttonRestart = findViewById(R.id.buttonRestart);
+
         // add toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        //add boardView
+        mBoardView = (BoardView) findViewById(R.id.board);
+        mBoardView.setGame(mGame);
+        // Buscar el botón de reinicio por su ID
+        Button buttonRestart = findViewById(R.id.buttonRestart);
         // Agregar un evento de clic al botón de reinicio
         buttonRestart.setOnClickListener(v -> {
             // Llama a una función para reiniciar el juego
             startNewGame();
         });
-        //setContentView(R.layout.main);
-        // Buscar el botón por su ID
-        mBoardButtons = new Button[9];
-        mBoardButtons[0] = (Button) findViewById(R.id.one);
-        mBoardButtons[1] = (Button) findViewById(R.id.two);
-        mBoardButtons[2] = (Button) findViewById(R.id.three);
-        mBoardButtons[3] = (Button) findViewById(R.id.four);
-        mBoardButtons[4] = (Button) findViewById(R.id.five);
-        mBoardButtons[5] = (Button) findViewById(R.id.six);
-        mBoardButtons[6] = (Button) findViewById(R.id.seven);
-        mBoardButtons[7] = (Button) findViewById(R.id.eight);
-        mBoardButtons[8] = (Button) findViewById(R.id.nine);
+
         mInfoTextView = (TextView) findViewById(R.id.information);
         mGame = new TicTacToeGame();
 
@@ -157,12 +151,7 @@ public class MainActivity extends AppCompatActivity {
     // Set up the game board.
     private void startNewGame() {
         mGame.clearBoard();
-        // Reset all buttons
-        for (int i = 0; i < mBoardButtons.length; i++) {
-            mBoardButtons[i].setText("");
-            mBoardButtons[i].setEnabled(true);
-            mBoardButtons[i].setOnClickListener((View.OnClickListener) new ButtonClickListener(i));
-        }
+        mBoardView.invalidate();// Redraw the board
         mInfoTextView.setText("You go first.");
 
     }
