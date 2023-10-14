@@ -75,42 +75,14 @@ public class BoardView extends View {
         canvas.drawLine(0, cellHeight, boardWidth, cellHeight, mPaint);
         canvas.drawLine(0, cellHeight * 2, boardWidth, cellHeight * 2, mPaint);
 
-        /*int left = 2*cellWidth;
-        int top = 0;
-        int right = 3*cellWidth;
-        int bottom = cellWidth;
-
-        canvas.drawBitmap(mHumanBitmap,null,new Rect(left, top, right, bottom),null);
-
-        Log.d("MyApp", "left: " + left);
-        Log.d("MyApp", "top: " + top);
-        Log.d("MyApp", "right: " + right);
-        Log.d("MyApp", "bottom: " + bottom);*/
         for (int i = 0; i < mGame.BOARD_SIZE; i++) {
             int col = i % 3;
             int row = i / 3;
-            Log.d("MyApp", "col: " + col+" row: "+row);
-            /*if (mGame.getBoardOccupant(i)=='X'){
-                Log.d("MyApp", "col: " + col);
-                Log.d("MyApp", "row: " + row);
-                Log.d("MyApp", "i: " + i);
-            }*/
-
-            //Log.d("MyApp", "row: " + row);
-
-            // Define las coordenadas del rectángulo de destino para la imagen
+            Log.d("MyApp", "col: " + col + " row: " + row);
             int left = col * cellWidth;
             int top = row * cellHeight;
-            int right = (col+1)*cellWidth;
-            int bottom = (row+1)*cellHeight;
-            /*int left = col * cellWidth;
-            int top = row * cellHeight;
-            int right = (col+1)*cellWidth;
-            int bottom = (top+1)*cellHeight;*/
-
-            /*Log.d("BoardView", "onDraw called"+top);
-            Log.d("BoardView", "onDraw called"+right);
-            Log.d("BoardView", "onDraw called"+bottom);*/
+            int right = (col + 1) * cellWidth;
+            int bottom = (row + 1) * cellHeight;
 
             if (mGame != null) {
                 if (mGame.getBoardOccupant(i) == TicTacToeGame.HUMAN_PLAYER) {
@@ -120,6 +92,7 @@ public class BoardView extends View {
                 }
             }
         }
+
     }
 
 }
