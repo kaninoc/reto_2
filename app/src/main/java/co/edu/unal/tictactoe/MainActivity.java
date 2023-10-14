@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     // Represents the internal state of the game
     private TicTacToeGame mGame;
 
+    private boolean mGameOver = false;
     // Buttons making up the board
     private Button mBoardButtons[];
     // Various text displayed
@@ -31,6 +33,50 @@ public class MainActivity extends AppCompatActivity {
     static final int DIALOG_QUIT_ID = 1;
 
     private BoardView mBoardView;
+
+    private boolean setMove(char player, int location) {
+        if (mGame.setMove(player, location)) {
+            mBoardView.invalidate();
+            return true;
+        }
+        return false;
+    }
+
+    // Listen for touches on the board
+    private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            // Determine which cell was touched
+            int col = (int) event.getX() / mBoardView.getBoardCellWidth();
+            int row = (int) event.getY() / mBoardView.getBoardCellHeight();
+            int pos = row * 3 + col;
+
+            if (!mGameOver && setMove(TicTacToeGame.HUMAN_PLAYER, pos)) {
+                // If no winner yet, let the computer make a move
+
+                // Lógica para que la computadora realice su movimiento
+                int winner = mGame.checkForWinner();
+                if (winner == 0) {
+                    mInfoTextView.setText(R.string.turn_computer);
+                    int move = mGame.getComputerMove();
+                    setMove(TicTacToeGame.COMPUTER_PLAYER, move);
+                    winner = mGame.checkForWinner();
+                }
+                if (winner == 0)
+                    mInfoTextView.setText(R.string.turn_human);
+                else if (winner == 1)
+                    mInfoTextView.setText(R.string.result_tie);
+                else if (winner == 2)
+                    mInfoTextView.setText(R.string.result_human_wins);
+                else
+                    mInfoTextView.setText(R.string.result_computer_wins);
+            }
+
+            // So we aren't notified of continued events when finger is moved
+            return false;
+        }
+    };
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         //add boardView
         mBoardView = (BoardView) findViewById(R.id.board);
+        mGame = new TicTacToeGame();
         mBoardView.setGame(mGame);
         // Buscar el botón de reinicio por su ID
         Button buttonRestart = findViewById(R.id.buttonRestart);
@@ -53,11 +100,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mInfoTextView = (TextView) findViewById(R.id.information);
-        mGame = new TicTacToeGame();
-
+        mBoardView.setOnTouchListener(mTouchListener);
         startNewGame();
 
-        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -68,13 +115,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.new_game:
                 startNewGame();
                 return true;
             case R.id.ai_difficulty:
                 showDialog(DIALOG_DIFFICULTY_ID);
-            return true;
+                return true;
             case R.id.quit:
                 // Declarar un objeto AlertDialog.Builder
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -99,19 +146,21 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog dialog = builder.create();
                 dialog.show();
                 break;
-            
+
 
         }
         return true;
     }
+
     int selected = -1;
+
     @Override
     protected Dialog onCreateDialog(int id) {
 
         Dialog dialog = null;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        switch(id) {
+        switch (id) {
             case DIALOG_DIFFICULTY_ID:
                 builder.setTitle(R.string.difficulty_choose);
                 final CharSequence[] levels = {
@@ -148,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
 
         return dialog;
     }
+
     // Set up the game board.
     private void startNewGame() {
         mGame.clearBoard();
@@ -156,7 +206,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
     // Handles clicks on the game board buttons
-    private class ButtonClickListener implements View.OnClickListener {
+
+
+}   /*private class ButtonClickListener implements View.OnClickListener {
         int location;
 
         public ButtonClickListener(int location) {
@@ -198,5 +250,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-}
+}*/
 

@@ -9,7 +9,7 @@ public class TicTacToeGame {
     public static final char OPEN_SPOT = ' ';
     private char[] mBoard;
     private Random mRand;
-    private final int BOARD_SIZE = 9;
+    public static final int BOARD_SIZE = 9;
 
     // Los niveles de dificultad de la computadora
     public enum DifficultyLevel { Easy, Hard, Expert };
@@ -37,15 +37,14 @@ public class TicTacToeGame {
         for (int i = 0; i < 9; i++) {
             mBoard[i] = OPEN_SPOT;
         }
-        for (int i = 0; i < mBoard.length; i++) {
-            System.out.println("Elemento " + i + ": " + mBoard[i]);
-        }
     }
 
-    public void setMove(char player, int location) {
+    public boolean setMove(char player, int location) {
         if (location >= 0 && location < 9 && mBoard[location] == OPEN_SPOT) {
             mBoard[location] = player;
+            return true;
         }
+        return false;
     }
     public char getBoardOccupant(int location) {
         return mBoard[location];
