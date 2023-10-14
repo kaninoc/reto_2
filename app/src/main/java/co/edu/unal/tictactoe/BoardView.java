@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.media.MediaPlayer;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -18,7 +19,6 @@ public class BoardView extends View {
     //Variables de clase
     private Bitmap mHumanBitmap;
     private Bitmap mComputerBitmap;
-
     private Paint mPaint;
     private TicTacToeGame mGame; // Declaración de la variable miembro mGame
 
@@ -58,7 +58,7 @@ public class BoardView extends View {
         Log.d("BoardView", "onDraw called");
         super.onDraw(canvas);
         // Establecer el tamaño deseado del Canvas (300x300)
-        float GRID_WIDTH = 1.0f;
+        float GRID_WIDTH = 5.0f;
         // Determine el ancho y alto del View
         int boardWidth = getWidth();
         int boardHeight = boardWidth;

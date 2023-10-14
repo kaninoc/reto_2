@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,7 +30,8 @@ public class MainActivity extends AppCompatActivity {
     static final int DIALOG_QUIT_ID = 1;
 
     private BoardView mBoardView;
-
+    MediaPlayer mHumanMediaPlayer;
+    MediaPlayer mComputerMediaPlayer;
     private boolean setMove(char player, int location) {
         if (mGame.setMove(player, location)) {
             mBoardView.invalidate();
@@ -48,14 +50,17 @@ public class MainActivity extends AppCompatActivity {
             int pos = row * 3 + col;
 
             if (!mGameOver && setMove(TicTacToeGame.HUMAN_PLAYER, pos)) {
-                // If no winner yet, let the computer make a move
+                // Play the sound effect for human's move
+                mHumanMediaPlayer.start();
 
                 // Lógica para que la computadora realice su movimiento
                 int winner = mGame.checkForWinner();
                 if (winner == 0) {
+
                     mInfoTextView.setText(R.string.turn_computer);
                     int move = mGame.getComputerMove();
                     setMove(TicTacToeGame.COMPUTER_PLAYER, move);
+                    mComputerMediaPlayer.start();
                     winner = mGame.checkForWinner();
                 }
                 if (winner == 0) {
@@ -205,6 +210,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
     // Handles clicks on the game board buttons
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mHumanMediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.click);
+        mComputerMediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.bambu);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mHumanMediaPlayer.release();
+        mComputerMediaPlayer.release();
+    }
 
 
 }
