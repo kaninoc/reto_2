@@ -86,13 +86,10 @@ public class BoardView extends View {
         Log.d("MyApp", "top: " + top);
         Log.d("MyApp", "right: " + right);
         Log.d("MyApp", "bottom: " + bottom);*/
-        if (mGame != null){
         for (int i = 0; i < mGame.BOARD_SIZE; i++) {
             int col = i % 3;
             int row = i / 3;
-            char c = mGame.getBoardOccupant(i);
-            Log.d("MyApp", "m value:  " + c);
-        }
+            Log.d("MyApp", "col: " + col+" row: "+row);
             /*if (mGame.getBoardOccupant(i)=='X'){
                 Log.d("MyApp", "col: " + col);
                 Log.d("MyApp", "row: " + row);
@@ -102,15 +99,18 @@ public class BoardView extends View {
             //Log.d("MyApp", "row: " + row);
 
             // Define las coordenadas del rectángulo de destino para la imagen
+            int left = col * cellWidth;
+            int top = row * cellHeight;
+            int right = (col+1)*cellWidth;
+            int bottom = (row+1)*cellHeight;
             /*int left = col * cellWidth;
             int top = row * cellHeight;
-            int right = left + cellWidth;
-            int bottom = top + cellHeight;
+            int right = (col+1)*cellWidth;
+            int bottom = (top+1)*cellHeight;*/
 
-            Log.d("BoardView", "onDraw called"+left);
-            Log.d("BoardView", "onDraw called"+top);
+            /*Log.d("BoardView", "onDraw called"+top);
             Log.d("BoardView", "onDraw called"+right);
-            Log.d("BoardView", "onDraw called"+bottom);
+            Log.d("BoardView", "onDraw called"+bottom);*/
 
             if (mGame != null) {
                 if (mGame.getBoardOccupant(i) == TicTacToeGame.HUMAN_PLAYER) {
@@ -118,9 +118,7 @@ public class BoardView extends View {
                 } else if (mGame.getBoardOccupant(i) == TicTacToeGame.COMPUTER_PLAYER) {
                     canvas.drawBitmap(mComputerBitmap, null, new Rect(left, top, right, bottom), null);
                 }
-            }*/
-        }else{
-            Log.d("MyApp", "m value:  " + "Falso");
+            }
         }
     }
 
