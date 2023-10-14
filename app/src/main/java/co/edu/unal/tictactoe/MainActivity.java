@@ -27,11 +27,12 @@ public class MainActivity extends AppCompatActivity {
     // Various text displayed
     private TextView mInfoTextView;
     static final int DIALOG_DIFFICULTY_ID = 0;
-    static final int DIALOG_QUIT_ID = 1;
-
     private BoardView mBoardView;
     MediaPlayer mHumanMediaPlayer;
     MediaPlayer mComputerMediaPlayer;
+
+    MediaPlayer mVictory;
+    MediaPlayer mDefeat;
     private boolean setMove(char player, int location) {
         if (mGame.setMove(player, location)) {
             mBoardView.invalidate();
@@ -69,9 +70,11 @@ public class MainActivity extends AppCompatActivity {
                     mInfoTextView.setText(R.string.result_tie);
                 }else if (winner == 2) {
                     mInfoTextView.setText(R.string.result_human_wins);
+                    mVictory.start();
                     mGameOver = true;
                 }else {
                     mInfoTextView.setText(R.string.result_computer_wins);
+                    mDefeat.start();
                     mGameOver = true;
                 }
             }
@@ -215,6 +218,8 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         mHumanMediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.click);
         mComputerMediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.bambu);
+        mVictory = MediaPlayer.create(getApplicationContext(), R.raw.victory);
+        mDefeat = MediaPlayer.create(getApplicationContext(), R.raw.defeat);
     }
 
     @Override
@@ -222,6 +227,8 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         mHumanMediaPlayer.release();
         mComputerMediaPlayer.release();
+        mVictory.release();
+        mDefeat.release();
     }
 
 
