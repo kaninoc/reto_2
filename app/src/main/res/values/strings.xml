@@ -13,4 +13,7 @@
     <string name="quit_question">Are you sure you want to quit?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="count_ties">Ties: </string>
+    <string name="count_human">Human: </string>
+    <string name="count_android">Android: </string>
 </resources>

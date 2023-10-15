@@ -50,9 +50,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/buttonRestart">
 
-        <!-- Contador de partidas -->
+        <!-- Contador de victorias humano -->
         <TextView
-            android:id="@+id/gameCounter"
+            android:id="@+id/humanWinsCounter"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -60,9 +60,9 @@
             android:text="Human: 0"
             android:textSize="16sp" />
 
-        <!-- Contador de victorias del humano -->
+        <!-- Contador de partidas -->
         <TextView
-            android:id="@+id/humanWinsCounter"
+            android:id="@+id/tieCounter"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -72,7 +72,7 @@
 
         <!-- Contador de victorias del PC -->
         <TextView
-            android:id="@+id/computerWinsCounter"
+            android:id="@+id/androidWinsCounter"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

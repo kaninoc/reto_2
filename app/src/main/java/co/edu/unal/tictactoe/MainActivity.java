@@ -24,8 +24,20 @@ public class MainActivity extends AppCompatActivity {
     private TicTacToeGame mGame;
 
     private static boolean mGameOver = false;
+
+    private static int count_ties = 0;
+
+    private static int count_human = 0;
+
+    private static int count_android = 0;
     // Various text displayed
     private TextView mInfoTextView;
+    private TextView tieCountView;
+
+    private TextView humanCountView;
+
+    private TextView androidCountView;
+
     static final int DIALOG_DIFFICULTY_ID = 0;
     private BoardView mBoardView;
     MediaPlayer mHumanMediaPlayer;
@@ -67,18 +79,26 @@ public class MainActivity extends AppCompatActivity {
                 if (winner == 0) {
                 mInfoTextView.setText(R.string.turn_human);
                 }else if (winner == 1) {
+                    count_ties +=1;
+                    String cadena = getResources().getString(R.string.count_ties);;
                     mInfoTextView.setText(R.string.result_tie);
+                    tieCountView.setText(cadena+" "+ count_ties);
                 }else if (winner == 2) {
+                    count_human +=1;
+                    String cadena = getResources().getString(R.string.count_human);;
+                    humanCountView.setText(cadena+" "+ count_human);
                     mInfoTextView.setText(R.string.result_human_wins);
                     mVictory.start();
                     mGameOver = true;
                 }else {
+                    count_android +=1;
+                    String cadena = getResources().getString(R.string.count_android);
+                    androidCountView.setText(cadena+" "+ count_android);
                     mInfoTextView.setText(R.string.result_computer_wins);
                     mDefeat.start();
                     mGameOver = true;
                 }
             }
-
             // So we aren't notified of continued events when finger is moved
             return false;
         }
@@ -107,6 +127,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mInfoTextView = (TextView) findViewById(R.id.information);
+        tieCountView = (TextView) findViewById(R.id.tieCounter);
+        humanCountView = (TextView) findViewById(R.id.humanWinsCounter);
+        androidCountView = (TextView) findViewById(R.id.androidWinsCounter);
         mBoardView.setOnTouchListener(mTouchListener);
         startNewGame();
 
