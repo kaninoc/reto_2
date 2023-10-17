@@ -7,6 +7,7 @@ public class TicTacToeGame {
     public static final char HUMAN_PLAYER = 'X';
     public static final char COMPUTER_PLAYER = 'O';
     public static final char OPEN_SPOT = ' ';
+
     private char[] mBoard;
     private Random mRand;
     public static final int BOARD_SIZE = 9;
@@ -16,6 +17,12 @@ public class TicTacToeGame {
     // Nivel de dificultad actual
     private DifficultyLevel mDifficultyLevel = DifficultyLevel.Easy;
 
+    public char[] getBoardState() {
+        return mBoard;
+    }
+    public void setBoardState(char[] mBoard) {
+        this.mBoard = mBoard;
+    }
     public DifficultyLevel getDifficultyLevel() {
         return mDifficultyLevel;
     }

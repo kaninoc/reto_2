@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
     static final int DIALOG_DIFFICULTY_ID = 0;
     private BoardView mBoardView;
+
+    private String mGoFirst = "You go first.";
     MediaPlayer mHumanMediaPlayer;
     MediaPlayer mComputerMediaPlayer;
 
@@ -135,6 +137,25 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mGame.setBoardState(savedInstanceState.getCharArray("board"));
+        mGameOver = savedInstanceState.getBoolean("mGameOver");
+        mInfoTextView.setText(savedInstanceState.getCharSequence("info"));
+        count_human = savedInstanceState.getInt("mHumanWins");
+        count_android = savedInstanceState.getInt("mComputerWins");
+        count_ties = savedInstanceState.getInt("mTies");
+        displayScores();
+    }
+    private void displayScores() {
+        String cadena1 = getResources().getString(R.string.count_human);
+        String cadena2 = getResources().getString(R.string.count_android);
+        String cadena3 = getResources().getString(R.string.count_ties);
+        humanCountView.setText(cadena1+" "+ count_ties);
+        androidCountView.setText(cadena2+" "+ count_ties);
+        tieCountView.setText(cadena3+" "+ count_ties);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -254,6 +275,15 @@ public class MainActivity extends AppCompatActivity {
         mDefeat.release();
     }
 
-
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putCharArray("board", mGame.getBoardState());
+        outState.putBoolean("mGameOver", mGameOver);
+        outState.putInt("mHumanWins", Integer.valueOf(count_human));
+        outState.putInt("mComputerWins", Integer.valueOf(count_android));
+        outState.putInt("mTies", Integer.valueOf(count_ties));
+        outState.putCharSequence("info", mInfoTextView.getText());
+    }
 }
 
