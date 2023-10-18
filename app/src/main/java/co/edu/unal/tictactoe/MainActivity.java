@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
-
 public class MainActivity extends AppCompatActivity {
 
     // Represents the internal state of the game
@@ -30,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private static int count_human = 0;
 
     private static int count_android = 0;
+
+    private static int difficulty = 0;
     // Various text displayed
     private TextView mInfoTextView;
     private TextView tieCountView;
@@ -41,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
     static final int DIALOG_DIFFICULTY_ID = 0;
     private BoardView mBoardView;
 
-    private String mGoFirst = "You go first.";
     MediaPlayer mHumanMediaPlayer;
     MediaPlayer mComputerMediaPlayer;
 
@@ -133,10 +133,9 @@ public class MainActivity extends AppCompatActivity {
         humanCountView = (TextView) findViewById(R.id.humanWinsCounter);
         androidCountView = (TextView) findViewById(R.id.androidWinsCounter);
         mBoardView.setOnTouchListener(mTouchListener);
+
         startNewGame();
-
     }
-
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -146,15 +145,26 @@ public class MainActivity extends AppCompatActivity {
         count_human = savedInstanceState.getInt("mHumanWins");
         count_android = savedInstanceState.getInt("mComputerWins");
         count_ties = savedInstanceState.getInt("mTies");
+        difficulty = savedInstanceState.getInt("difficulty");
         displayScores();
+        restoreDifficult(difficulty);
     }
     private void displayScores() {
         String cadena1 = getResources().getString(R.string.count_human);
         String cadena2 = getResources().getString(R.string.count_android);
         String cadena3 = getResources().getString(R.string.count_ties);
-        humanCountView.setText(cadena1+" "+ count_ties);
-        androidCountView.setText(cadena2+" "+ count_ties);
+        humanCountView.setText(cadena1+" "+ count_human);
+        androidCountView.setText(cadena2+" "+ count_android);
         tieCountView.setText(cadena3+" "+ count_ties);
+    }
+    private void restoreDifficult(int item) {
+        if (item == 0) {
+            mGame.setDifficultyLevel(TicTacToeGame.DifficultyLevel.Easy);
+        } else if (item == 1) {
+            mGame.setDifficultyLevel(TicTacToeGame.DifficultyLevel.Hard);
+        } else if (item == 2) {
+            mGame.setDifficultyLevel(TicTacToeGame.DifficultyLevel.Expert);
+        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -229,10 +239,14 @@ public class MainActivity extends AppCompatActivity {
                                 // Configurar el nivel de dificultad en mGame según la selección
                                 if (item == 0) {
                                     mGame.setDifficultyLevel(TicTacToeGame.DifficultyLevel.Easy);
+                                    difficulty = 0;
                                 } else if (item == 1) {
                                     mGame.setDifficultyLevel(TicTacToeGame.DifficultyLevel.Hard);
+                                    difficulty = 1;
                                 } else if (item == 2) {
                                     mGame.setDifficultyLevel(TicTacToeGame.DifficultyLevel.Expert);
+                                    difficulty = 2;
+
                                 }
 
                                 dialog.dismiss(); // Cerrar el diálogo
@@ -284,6 +298,7 @@ public class MainActivity extends AppCompatActivity {
         outState.putInt("mComputerWins", Integer.valueOf(count_android));
         outState.putInt("mTies", Integer.valueOf(count_ties));
         outState.putCharSequence("info", mInfoTextView.getText());
+        outState.putInt("difficulty", difficulty);
     }
 }
 
