@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     MediaPlayer mComputerMediaPlayer;
 
     MediaPlayer mVictory;
+
+    MediaPlayer mTie;
     MediaPlayer mDefeat;
     private boolean setMove(char player, int location) {
         if (mGame.setMove(player, location)) {
@@ -87,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
                     String cadena = getResources().getString(R.string.count_ties);;
                     mInfoTextView.setText(R.string.result_tie);
                     tieCountView.setText(cadena+" "+ count_ties);
+                    mTie.start();
                 }else if (winner == 2) {
                     count_human +=1;
                     String cadena = getResources().getString(R.string.count_human);;
@@ -208,6 +211,7 @@ public class MainActivity extends AppCompatActivity {
                 count_human = 0;
                 count_android = 0;
                 count_ties = 0;
+                difficulty = 0;
                 mGameOver = false;
                 startNewGame();
                 return true;
@@ -308,6 +312,7 @@ public class MainActivity extends AppCompatActivity {
         mHumanMediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.click);
         mComputerMediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.bambu);
         mVictory = MediaPlayer.create(getApplicationContext(), R.raw.victory);
+        mTie = MediaPlayer.create(getApplicationContext(), R.raw.tie);
         mDefeat = MediaPlayer.create(getApplicationContext(), R.raw.defeat);
     }
 
@@ -317,6 +322,7 @@ public class MainActivity extends AppCompatActivity {
         mHumanMediaPlayer.release();
         mComputerMediaPlayer.release();
         mVictory.release();
+        mTie.release();
         mDefeat.release();
     }
 

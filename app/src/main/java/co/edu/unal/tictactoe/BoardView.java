@@ -58,14 +58,14 @@ public class BoardView extends View {
         Log.d("BoardView", "onDraw called");
         super.onDraw(canvas);
         // Establecer el tamaño deseado del Canvas (300x300)
-        float GRID_WIDTH = 5.0f;
+        float GRID_WIDTH = 7.0f;
         // Determine el ancho y alto del View
         int boardWidth = getWidth();
         int boardHeight = boardWidth;
 
         // Dibujar las líneas verticales
         int cellWidth = boardWidth / 3;
-        mPaint.setColor(Color.RED);
+        mPaint.setColor(Color.BLACK);
         mPaint.setStrokeWidth(GRID_WIDTH);
         canvas.drawLine(cellWidth, 0, cellWidth, boardHeight, mPaint);
         canvas.drawLine(cellWidth * 2, 0, cellWidth * 2, boardHeight, mPaint);
