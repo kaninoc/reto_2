@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor ed = mPrefs.edit();
         ed.putInt("count_human", count_human);
         ed.putInt("count_android", count_android);
-        ed.putInt("mTies", count_ties);
+        ed.putInt("count_ties", count_ties);
         ed.commit();
     }
     @Override
@@ -287,7 +287,9 @@ public class MainActivity extends AppCompatActivity {
         mGame.clearBoard();
         mBoardView.invalidate();// Redraw the board
         mInfoTextView.setText("You go first.");
-
+        humanCountView.setText("Human: "+count_human);
+        androidCountView.setText("Android: "+count_android);
+        tieCountView.setText("Ties: "+count_ties);
     }
     // Handles clicks on the game board buttons
     @Override
