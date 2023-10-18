@@ -202,6 +202,12 @@ public class MainActivity extends AppCompatActivity {
             case R.id.ai_difficulty:
                 showDialog(DIALOG_DIFFICULTY_ID);
                 return true;
+            case R.id.reset_score:
+                count_human = 0;
+                count_android = 0;
+                count_ties = 0;
+                startNewGame();
+                return true;
             case R.id.quit:
                 // Declarar un objeto AlertDialog.Builder
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
