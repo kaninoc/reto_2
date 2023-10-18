@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
         count_human = mPrefs.getInt("count_human", 0);
         count_android = mPrefs.getInt("count_android", 0);
         count_ties = mPrefs.getInt("count_ties", 0);
+        difficulty = mPrefs.getInt("difficulty", 0);
         startNewGame();
     }
 
@@ -153,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
         ed.putInt("count_human", count_human);
         ed.putInt("count_android", count_android);
         ed.putInt("count_ties", count_ties);
+        ed.putInt("difficulty", difficulty);
         ed.commit();
     }
     @Override
@@ -206,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
                 count_human = 0;
                 count_android = 0;
                 count_ties = 0;
+                mGameOver = false;
                 startNewGame();
                 return true;
             case R.id.quit:
@@ -296,6 +299,7 @@ public class MainActivity extends AppCompatActivity {
         humanCountView.setText("Human: "+count_human);
         androidCountView.setText("Android: "+count_android);
         tieCountView.setText("Ties: "+count_ties);
+        restoreDifficult(difficulty);
     }
     // Handles clicks on the game board buttons
     @Override
