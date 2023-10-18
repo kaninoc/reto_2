@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Menu;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     static final int DIALOG_DIFFICULTY_ID = 0;
     private BoardView mBoardView;
 
+    private SharedPreferences mPrefs;
     MediaPlayer mHumanMediaPlayer;
     MediaPlayer mComputerMediaPlayer;
 
@@ -134,7 +136,24 @@ public class MainActivity extends AppCompatActivity {
         androidCountView = (TextView) findViewById(R.id.androidWinsCounter);
         mBoardView.setOnTouchListener(mTouchListener);
 
+        //add persistence data
+        mPrefs = getSharedPreferences("ttt_prefs", MODE_PRIVATE);
+        //load data
+        count_human = mPrefs.getInt("count_human", 0);
+        count_android = mPrefs.getInt("count_android", 0);
+        count_ties = mPrefs.getInt("count_ties", 0);
         startNewGame();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Save the current scores
+        SharedPreferences.Editor ed = mPrefs.edit();
+        ed.putInt("count_human", count_human);
+        ed.putInt("count_android", count_android);
+        ed.putInt("mTies", count_ties);
+        ed.commit();
     }
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
