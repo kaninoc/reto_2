@@ -203,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.new_game:
                 startNewGame();
+                mGameOver = false;
                 return true;
             case R.id.ai_difficulty:
                 showDialog(DIALOG_DIFFICULTY_ID);
